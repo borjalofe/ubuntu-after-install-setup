@@ -44,6 +44,10 @@ SYSADMIN=false
 VERBOSE=false
 YES=false
 
+PPA_MODIFIERS=""
+APT_MODIFIERS=""
+WGET_MODIFIERS=""
+
 while true; do
   case "$1" in
     -a | --angular ) ANGULAR=true; shift ;;
@@ -53,10 +57,19 @@ while true; do
     -j | --javascript ) JAVASCRIPT=true; shift ;;
     -m | --media ) MEDIA=true; shift ;;
     --nx ) NX=true; shift ;;
-    -q | --quiet ) QUIET=true; shift ;;
+    -q | --quiet )
+        QUIET=true;
+        APT_MODIFIERS="q$APT_MODIFIERS"
+        PPA_MODIFIERS="q$PPA_MODIFIERS"
+        WGET_MODIFIERS="q$WGET_MODIFIERS"
+        shift ;;
     -s | --sysadmin ) SYSADMIN=true; shift ;;
     -v | --verbose ) VERBOSE=true; shift ;;
-    -y | --yes ) YES=true; shift ;;
+    -y | --yes )
+        YES=true;
+        APT_MODIFIERS="y$APT_MODIFIERS"
+        PPA_MODIFIERS="y$PPA_MODIFIERS"
+        shift ;;
     -- ) shift ; break ;;
     * ) break ;;
   esac
@@ -66,43 +79,48 @@ if [ $HELP ]; then
   exit 1 ;
 fi;
 
+if [ $APT_MODIFIERS !== "" ]; then APT_MODIFIERS="-$APT_MODIFIERS"; fi
+if [ $PPA_MODIFIERS !== "" ]; then PPA_MODIFIERS="-$PPA_MODIFIERS"; fi
+if [ $WGET_MODIFIERS !== "" ]; then WGET_MODIFIERS="-$WGET_MODIFIERS"; fi
+
 cd ~/Downloads
 
-echo "First Upgrade"
-sudo add-apt-repository -y ppa:alessandro-strada/ppa
-sudo add-apt-repository -y ppa:teejee2008/ppa
-sudo add-apt-repository -y ppa:agornostal/ulauncher
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-wget https://go.skype.com/skypeforlinux-64.deb
-sudo apt -q update && sudo apt -qy upgrade && sudo apt -qy dist-upgrade
-echo "First Upgrade Done"
+sudo add-apt-repository $PPA_MODIFIERS ppa:alessandro-strada/ppa
+sudo add-apt-repository $PPA_MODIFIERS ppa:teejee2008/ppa
+sudo add-apt-repository $PPA_MODIFIERS ppa:agornostal/ulauncher
+wget $WGET_MODIFIERS https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+wget $WGET_MODIFIERS https://go.skype.com/skypeforlinux-64.deb
+
+if [ $VERBOSE && !$QUIET ]; then echo "First Upgrade"; fi
+sudo apt $APT_MODIFIERS update && sudo apt $APT_MODIFIERS upgrade && sudo apt $APT_MODIFIERS dist-upgrade
+if [ $VERBOSE && !$QUIET ]; then echo "First Upgrade Done"; fi
 
 echo "Installing Basic Tools"
 sudo dpkg -i google-chrome-stable_current_amd64.deb
-sudo apt -qy install gdebi gimp chrome-gnome-shell gnome-shell-extensions gnome-tweaks google-drive-ocamlfuse imagemagick inkscape laptop-mode-tools libdvd-pkg nautilus-actions qt5-style-kvantum qt5-style-kvantum-themes steam synaptic terminator timeshift ubuntu-restricted-extras ulauncher vlc rar unrar p7zip-full p7zip-rar
-sudo apt -qy install ./skypeforlinux-64.deb
+sudo apt $APT_MODIFIERS install gdebi gimp chrome-gnome-shell gnome-shell-extensions gnome-tweaks google-drive-ocamlfuse imagemagick inkscape laptop-mode-tools libdvd-pkg nautilus-actions qt5-style-kvantum qt5-style-kvantum-themes steam synaptic terminator timeshift ubuntu-restricted-extras ulauncher vlc rar unrar p7zip-full p7zip-rar
+sudo apt $APT_MODIFIERS install ./skypeforlinux-64.deb
 sudo dpkg-reconfigure libdvd-pkg
 sudo dpkg-reconfigure unattended-upgrades
-sudo apt -qy purge ubuntu-web-launchers
+sudo apt $APT_MODIFIERS purge ubuntu-web-launchers
 gsettings set org.gnome.desktop.interface show-battery-percentage true
 echo "export QT_STYLE_OVERRIDE=kvantum" >> ~/.profile
 echo 'HISTTIMEFORMAT="%F %T "' >> ~/.bashrc && source ~/.bashrc
 echo "Basic Tools Installed"
 
 echo "Installing Dev Tools"
-sudo apt -qy install apt-transport-https git software-properties-common wget
-wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
-sudo apt -qy update && sudo apt -qy upgrade && sudo apt -qy dist-upgrade
-sudo apt -qy install code
+sudo apt $APT_MODIFIERS install apt-transport-https git software-properties-common wget
+wget $WGET_MODIFIERS https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key $PPA_MODIFIERS add -
+sudo add-apt-repository $PPA_MODIFIERS "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+sudo apt $APT_MODIFIERS update && sudo apt $APT_MODIFIERS upgrade && sudo apt $APT_MODIFIERS dist-upgrade
+sudo apt $APT_MODIFIERS install code
 
-sudo add-apt-repository ppa:atareao/telegram &&\
-sudo apt update &&\
-sudo apt install -f telegram
+sudo add-apt-repository $PPA_MODIFIERS ppa:atareao/telegram &&\
+sudo apt $APT_MODIFIERS update &&\
+sudo apt $APT_MODIFIERS install -f telegram
 echo "Dev Tools Installed"
 
 echo "Installing Beyond Compare"
-wget https://www.scootersoftware.com/bcompare-4.3.7.25118_amd64.deb
+wget $WGET_MODIFIERS https://www.scootersoftware.com/bcompare-4.3.7.25118_amd64.deb
 sudo gdebi -n bcompare-4.3.7.25118_amd64.deb
 echo "Beyond Compare Installed"
 
@@ -120,5 +138,5 @@ echo "SSH Keys Generated"
 
 echo "Cleaning the System"
 rm bcompare-4.3.7.25118_amd64.deb skypeforlinux-64.deb google-chrome-stable_current_amd64.deb
-sudo apt -q update && sudo apt -qy autoremove && sudo apt -qy autoclean && sudo apt -q update
+sudo apt $APT_MODIFIERS update && sudo apt $APT_MODIFIERS autoremove && sudo apt $APT_MODIFIERS autoclean && sudo apt $APT_MODIFIERS update
 echo "System Cleaned"

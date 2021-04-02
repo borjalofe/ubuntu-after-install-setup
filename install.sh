@@ -1,6 +1,33 @@
 #!/bin/bash
 
-TEMP=`getopt -o vdm: --long angular,developer,help,javascript,media,quiet,sysadmin,verbose,yes`
+usage=$("after-install 1.0.0
+Usage: after-install [{-h | --help}] [{-a | --angular}] [{-d | --developer}]
+                        [{-j | --javascript}] [{-m | --media}] [--nx]
+                        [{-q | --quiet}] [{-s | --sysadmin}] [{-v | --verbose}]
+                        [{-y | --yes}]
+
+after-install is a script to set up a base environment after a clean Ubuntu
+installation.
+
+where:
+    -a, --angular       sets up an angular development environment
+    -d, --developer     sets up a basic development environment
+    -h, --help          show this help text
+    -j, --javascript    sets up a javascript development environment
+    -m, --media         sets up a media workspace
+    --nx                sets up a nx development environment
+    -q, --quiet         executes the script without any message
+    -s, --sysadmin      sets up a sysadmin environment
+    -v, --verbose       print all instructions and comments
+    -y, --yes           answer yes to all yes/no questions
+     ")
+
+if [ $# -eq 0 ]; then
+  echo $usage ;
+  exit 0 ;
+fi;
+
+TEMP=`getopt -o vdm: --long angular,developer,help,javascript,media,nx,quiet,sysadmin,verbose,yes`
 
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
@@ -8,8 +35,11 @@ eval set -- "$TEMP"
 
 ANGULAR=false
 DEVELOPER=false
+HELP=false
 JAVASCRIPT=false
 MEDIA=false
+NX=false
+QUIET=false
 SYSADMIN=false
 VERBOSE=false
 YES=false
@@ -19,17 +49,22 @@ while true; do
     -a | --angular ) ANGULAR=true; shift ;;
     -d | --developer ) DEVELOPER=true; shift ;;
     -h | --help )
-        ;
-        shift ;;
+        echo $usage ; HELP=true; shift ; break ;;
     -j | --javascript ) JAVASCRIPT=true; shift ;;
     -m | --media ) MEDIA=true; shift ;;
-    -q | --quiet ) SYSADMIN=true; shift ;;
+    --nx ) NX=true; shift ;;
+    -q | --quiet ) QUIET=true; shift ;;
+    -s | --sysadmin ) SYSADMIN=true; shift ;;
     -v | --verbose ) VERBOSE=true; shift ;;
     -y | --yes ) YES=true; shift ;;
-    -- ) shift; break ;;
+    -- ) shift ; break ;;
     * ) break ;;
   esac
 done
+
+if [ $HELP ]; then
+  exit 1 ;
+fi;
 
 cd ~/Downloads
 
@@ -60,6 +95,10 @@ wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add
 sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
 sudo apt -qy update && sudo apt -qy upgrade && sudo apt -qy dist-upgrade
 sudo apt -qy install code
+
+sudo add-apt-repository ppa:atareao/telegram &&\
+sudo apt update &&\
+sudo apt install -f telegram
 echo "Dev Tools Installed"
 
 echo "Installing Beyond Compare"

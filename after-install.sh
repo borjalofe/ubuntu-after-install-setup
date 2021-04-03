@@ -327,6 +327,36 @@ if [[ $SYSADMIN -eq 1 ]]; then
     echo "################################";
   fi
 
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Adding TeamViewer PPA"; fi
+
+  wget $WGET_MODIFIERS \
+  https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc -O- \
+  | sudo apt-key $PPA_MODIFIERS add - && sudo add-apt-repository $PPA_MODIFIERS \
+ "deb http://linux.teamviewer.com/deb stable main"
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Adding AngryIP Scan PPA"; fi
+
+  sudo add-apt-repository $PPA_MODIFIERS ppa:upubuntu-com/network
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Adding AnyDesk PPA"; fi
+
+  wget $WGET_MODIFIERS https://keys.anydesk.com/repos/DEB-GPG-KEY -O- \
+  | sudo apt-key $PPA_MODIFIERS add - && echo \
+  "deb http://deb.anydesk.com/ all main" | sudo tee \
+  /etc/apt/sources.list.d/anydesk-stable.list
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Updating sources"; fi
+
+  sudo apt $APT_MODIFIERS update && sudo apt $APT_MODIFIERS upgrade \
+  && sudo apt $APT_MODIFIERS dist-upgrade
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Installing SysAdmin's basics"; fi
+
+  sudo apt $APT_MODIFIERS install anydesk iperf3 ipscan net-tools nmap remmina \
+  teamviewer
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# SysAdmin's basics"; fi
+
 fi
 
 
@@ -428,6 +458,6 @@ if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
   echo "###############################";
 fi
 
-sudo apt $APT_MODIFIERS update && sudo apt $APT_MODIFIERS autoclean \
+sudo apt $APT_MODIFIERS update && sudo apt $APT_MODIFIERS --fix-broken install && sudo apt $APT_MODIFIERS autoclean \
 && sudo apt $APT_MODIFIERS clean && sudo apt $APT_MODIFIERS autoremove \
 && sudo apt $APT_MODIFIERS update

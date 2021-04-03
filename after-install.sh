@@ -252,8 +252,8 @@ if [[ $DEVELOPER -eq 1 ]]; then
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Installing basic tools"; fi
 
-  sudo apt $APT_MODIFIERS install apt-transport-https git \
-  software-properties-common wget
+  sudo apt $APT_MODIFIERS install apt-transport-https ca-certificates curl git \
+  gnupg lsb-release software-properties-common wget
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Basic tools installed"; fi
 
@@ -306,7 +306,11 @@ if [[ $DEVELOPER -eq 1 ]]; then
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Telegram installed"; fi
 
-  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Developer's tools installed"; fi
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    echo "# Developer's tools installed";
+
+  fi
 
 fi
 
@@ -338,6 +342,19 @@ if [[ $JAVASCRIPT -eq 1 ]]; then
     echo "################################";
   fi
 
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Install NVM"; fi
+
+  curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | \
+  bash && source ~/.profile
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+  
+    echo "# Install current Node and NPM LTSs";
+  
+  fi
+
+  nvm install --lts
+
 fi
 
 
@@ -352,6 +369,14 @@ if [[ $ANGULAR -eq 1 ]]; then
     echo "#                              #";
     echo "################################";
   fi
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+  
+    echo "# Install Angular";
+  
+  fi
+
+  npm install -g @angular/cli
 
 fi
 

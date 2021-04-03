@@ -8,6 +8,8 @@ same actions everytime.
 * [Intro](#intro)
 * [Technologies](#technologies)
 * [How to use it](#how-to-use-it)
+  * [Examples](#examples)
+* [Features](#features)
 
 ## Intro
 
@@ -65,9 +67,29 @@ To install a basic Angular dev env, you just need to write: `./after-install.sh 
 
 ## Features
 
-* Do all basic after-install actions you usually read in a "X things to do \
-after install Ubuntu yy.mm" automatically
+* Do all basic after-install actions you usually read in a "X things to do after install Ubuntu yy.mm" automatically
+  * First upgrade
+  * Enable Ubuntu's partners repos
+  * Install Gnome Shell extensions
+  * Install Gnome Tweak Tool
+  * Install Laptop Mode Tools
+  * Install third-party codecs -Ubuntu restricted extras and libdvd-
+  * Install Microsoft fonts
+  * Install software:
+    * Flatpak and Synaptic
+    * Google Chrome -and Gnome Shell extension for Chrome-
+    * Skype
+    * Steam
+    * Thunderbird
+    * Timeshift
+    * Transmission
+    * Ulauncher
+    * VLC
+  * Install tools:
+    * Compressors -rar, p7zip-
+    * Terminator
 * Prepare your newly installed Ubuntu for your daily work
+  * Install VSCode
 
 ToDo:
 
@@ -81,6 +103,7 @@ ToDo:
   * PHP/MySQL
   * WordPress
 * Install usual Google Chrome extensions
+* Install usual Thunderbird extensions
 * Install usual VSCode extensions for each development env
   * Basic
   * Javascript
@@ -91,3 +114,11 @@ ToDo:
 * Setup Google Drive OCamLFuse
 * Setup Timeshift
 * Setup Ulauncher
+
+## Status
+
+This project is being developed.
+
+## Contact
+
+Created by [@borjalofe](https://github.com/borjalofe) - feel free to contact me!

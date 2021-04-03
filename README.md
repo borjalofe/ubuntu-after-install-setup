@@ -1,20 +1,93 @@
-# ubuntu-after-install-setup
-This is the script I run after installing Ubuntu
+# Ubuntu After-Install Setup Script
 
-@TODO
+This script aims at easing the after-install process in which we usually do the
+same actions everytime.
 
-1. Add parameters to customize install:
-  1. [Source 1](https://likegeeks.com/linux-bash-scripting-awesome-guide-part3/)
-  1. [Source 2](https://stackoverflow.com/a/7948533)
-1. [Install a grub theme](https://github.com/satyakami/grub2-deadpool-theme)
-1. [Setup Git username](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
-1. [Install Visual Studio Code](https://linuxize.com/post/how-to-install-visual-studio-code-on-ubuntu-20-04/)
-1. [ASUS MB168B extra monitor troubleshoot](https://www.iven.in/2019/04/asus-mb169b-usb-installation-ubuntu.html)
-1. Install Google Chrome: ```wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo dpkg -i google-chrome-stable_current_amd64.deb```
-1. Get ideas from the "things to do after install Ubuntu 20.04" posts:
-  1. [Source 1](https://fossbytes.com/things-to-do-after-installing-ubuntu/)
-  1. [Source 2](https://www.tecmint.com/things-to-do-after-installing-ubuntu-20-04/)
-  1. [Source 3](https://www.omgubuntu.co.uk/2020/04/things-to-do-after-installing-ubuntu)
-  1. [Source 4](https://itsfoss.com/things-to-do-after-installing-ubuntu-20-04/)
-  1. [Source 5](https://www.linuxuprising.com/2020/04/top-things-to-do-after-installing.html)
-  1. [Source 6](https://linuxhint.com/40_things_after_installing_ubuntu/)
+## Table of Contents
+
+* [Intro](#intro)
+* [Technologies](#technologies)
+* [How to use it](#how-to-use-it)
+
+## Intro
+
+Everytime I install Ubuntu in a new laptop, I google _Ubuntu {version} after
+install_ and I get lots of posts that -essentially- have the same info.
+Moreover, this info don't usually change between versions.
+
+Thus, I've created this project to have all that actions automated for each of
+the jobs I usually do.
+
+Over the time, I've tried to expand this script's features to cover other jobs.
+
+## Technologies
+
+After-Install is created with:
+
+* Shellscript
+
+## How to use it
+
+```bash
+wget https://github.com/borjalofe/ubuntu-after-install-setup/blob/main/after-install.sh
+chmod +x after-install.sh
+./after-install.sh
+```
+
+`./after-install.sh` displays the following usage message:
+
+```bash
+after-install 1.0.0
+Usage: after-install [{-h | --help}] [{-a | --angular}] [{-d | --developer}]
+                        [{-j | --javascript}] [{-m | --media}] [--nx]
+                        [{-q | --quiet}] [{-s | --sysadmin}] [{-v | --verbose}]
+                        [{-y | --yes}]
+
+after-install is a script to set up a base environment after a clean Ubuntu
+installation.
+
+where:
+    -a, --angular       sets up an angular development environment
+    -d, --developer     sets up a basic development environment
+    -h, --help          show this help text
+    -j, --javascript    sets up a javascript development environment
+    -m, --media         sets up a media workspace
+    --nx                sets up a nx development environment
+    -q, --quiet         executes the script without any message
+    -s, --sysadmin      sets up a sysadmin environment
+    -v, --verbose       print all instructions and comments
+    -y, --yes           answer yes to all yes/no questions
+```
+
+### Examples
+
+To install a basic Angular dev env, you just need to write: `./after-install.sh -a` or `./after-install.sh --angular`
+
+## Features
+
+* Do all basic after-install actions you usually read in a "X things to do \
+after install Ubuntu yy.mm" automatically
+* Prepare your newly installed Ubuntu for your daily work
+
+ToDo:
+
+* Add an easy way to extend after-install actions with an updated usage message
+* Get git user info to setup local git
+* Install and setup Docker and add usual .dockerfile
+* Install and setup Slack 
+  * Javascript
+  * Angular
+  * NX
+  * PHP/MySQL
+  * WordPress
+* Install usual Google Chrome extensions
+* Install usual VSCode extensions for each development env
+  * Basic
+  * Javascript
+  * Angular
+  * NX
+  * PHP/MySQL
+  * WordPress
+* Setup Google Drive OCamLFuse
+* Setup Timeshift
+* Setup Ulauncher

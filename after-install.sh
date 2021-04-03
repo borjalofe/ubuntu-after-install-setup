@@ -176,8 +176,6 @@ wget $WGET_MODIFIERS https://www.scootersoftware.com/bcompare-4.3.7.25118_amd64.
 
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
-# @TODO: Add code to install my usual Google Chrome extensions
-
 sudo apt $APT_MODIFIERS install chrome-gnome-shell flatpak gdebi \
 gnome-software-plugin-flatpak gnome-shell-extensions gnome-tweaks \
 google-drive-ocamlfuse laptop-mode-tools libdvd-pkg nautilus-actions \
@@ -294,8 +292,6 @@ if [[ $DEVELOPER -eq 1 ]]; then
   && sudo apt $APT_MODIFIERS dist-upgrade
 
   sudo apt $APT_MODIFIERS install code
-
-  # @TODO: Add code to install my usual VSCode extensions
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# VS Code installed"; fi
 

@@ -96,12 +96,12 @@ ToDo:
 * Add an easy way to extend after-install actions with an updated usage message
 * Get git user info to setup local git
 * Install and setup Docker and add usual .dockerfile
-* Install and setup Slack 
   * Javascript
   * Angular
   * NX
   * PHP/MySQL
   * WordPress
+* Install and setup Slack 
 * Install usual Google Chrome extensions
 * Install usual Thunderbird extensions
 * Install usual VSCode extensions for each development env

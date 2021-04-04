@@ -5,30 +5,30 @@ same actions everytime.
 
 ## Table of Contents
 
-* [Intro](#intro)
-* [Technologies](#technologies)
-* [How to use it](#how-to-use-it)
-  * [Examples](#examples)
-* [Features](#features)
-* [Status](#status)
-* [Contact](#contact)
+- [Ubuntu After-Install Setup Script](#ubuntu-after-install-setup-script)
+  - [Table of Contents](#table-of-contents)
+  - [Intro](#intro)
+  - [Technologies](#technologies)
+  - [How to use it](#how-to-use-it)
+    - [Examples](#examples)
+  - [Features](#features)
+  - [Status](#status)
+  - [Contact](#contact)
 
 ## Intro
 
 Everytime I install Ubuntu in a new laptop, I google _Ubuntu {version} after
-install_ and I get lots of posts that -essentially- have the same info.
-Moreover, this info don't usually change between versions.
+install_ and I get lots of posts that -essentially- have the same info. Moreover, this info don't usually change from version to version.
 
-Thus, I've created this project to have all that actions automated for each of
-the jobs I usually do.
+Thus, I've created this project to automate all the actions for each of the jobs I usually do.
 
-Over the time, I've tried to expand this script's features to cover other jobs.
+Over time, I've tried to expand this script's features to cover other jobs.
 
 ## Technologies
 
 After-Install is created with:
 
-* Shellscript
+- Shellscript
 
 ## How to use it
 
@@ -69,58 +69,77 @@ To install a basic Angular dev env, you just need to write: `./after-install.sh 
 
 ## Features
 
-* Do all basic after-install actions you usually read in a "X things to do after install Ubuntu yy.mm" automatically
-  * First upgrade
-  * Enable Ubuntu's partners repos
-  * Install Gnome Shell extensions
-  * Install Gnome Tweak Tool
-  * Install Laptop Mode Tools
-  * Install third-party codecs -Ubuntu restricted extras and libdvd-
-  * Install Microsoft fonts
-  * Install software:
-    * Flatpak and Synaptic
-    * Google Chrome -and Gnome Shell extension for Chrome-
-    * Skype
-    * Steam
-    * Thunderbird
-    * Timeshift
-    * Transmission
-    * Ulauncher
-    * VLC
-  * Install tools:
-    * Compressors -rar, p7zip-
-    * Terminator
-* Prepare your newly installed Ubuntu for your daily work
-  * In the _developer_ mode:
-    * Install dev packages to allow dev and testing
-    * Generates a SSH key with a 1024-char passphrase
-    * Install VSCode - Code editor -
-    * Install Insomnia - API testing -
-    * Install Telegram
+- Do all basic after-install actions you usually read in a "X things to do after install Ubuntu yy.mm" automatically
+  - First upgrade
+  - Enable Ubuntu's partners repos
+  - Install Gnome Shell extensions
+  - Install Gnome Tweak Tool
+  - Install Laptop Mode Tools
+  - Install third-party codecs -Ubuntu restricted extras and libdvd-
+  - Install Microsoft fonts
+  - Install software:
+    - Flatpak and Synaptic
+    - Google Chrome -and Gnome Shell extension for Chrome-
+    - Skype
+    - Steam
+    - Thunderbird
+    - Timeshift
+    - Transmission
+    - Ulauncher
+    - VLC
+  - Install tools:
+    - Compressors -rar, p7zip-
+    - Terminator
+- Prepare your newly installed Ubuntu for your daily work
+  - In the _developer_ mode:
+    - Install dev packages to allow dev and testing
+    - Generates a SSH key with a 1024-char passphrase
+    - Install VSCode - Code editor -
+      - Install Beautify
+      - Install Emmet -HTML/CSS expander-
+      - Install git project manager
+      - Install Read Time -for MarkDown files-
+      - Install VSC Essentials
+    - Install Insomnia - API testing -
+    - Install Telegram
+  - In the _Javascript developer_ mode:
+    - Install NVM
+    - Install Node&NPM LTS
+    - Install VSCode Javascript extensions
+      - Install Javascript ES6 Code Snippets
+      - Install Typescript's Getters and Setters
+  - In the _Angular developer_ mode:
+    - Install Angular CLI
+    - Install VSCode Angular extensions
+      - Install Angular Essentials
+      - Install Angular Emmet -Angular expander-
+  - In the _NX developer_ mode:
+    - Install VSCode Angular extensions
+      - Install NX Angular Console
 
 ToDo:
 
-* Add an easy way to extend after-install actions with an updated usage message
-* Get git user info to setup local git
-* Install and setup Docker and add usual .dockerfile
-  * Javascript
-  * Angular
-  * NX
-  * PHP/MySQL
-  * WordPress
-* Install and setup Slack 
-* Install usual Google Chrome extensions
-* Install usual Thunderbird extensions
-* Install usual VSCode extensions for each development env
-  * Basic
-  * Javascript
-  * Angular
-  * NX
-  * PHP/MySQL
-  * WordPress
-* Setup Google Drive OCamLFuse
-* Setup Timeshift
-* Setup Ulauncher
+- Add an easy way to extend after-install actions with an updated usage message
+- Get git user info to setup local git
+- Install and setup Docker and add usual .dockerfile
+  - Javascript
+  - Angular
+  - NX
+  - PHP/MySQL
+  - WordPress
+- Install and setup Slack
+- Install usual Google Chrome extensions
+- Install usual Thunderbird extensions
+- Install usual VSCode extensions for each development env
+  - Basic
+  - Javascript
+  - Angular
+  - NX
+  - PHP/MySQL
+  - WordPress
+- Setup Google Drive OCamLFuse
+- Setup Timeshift
+- Setup Ulauncher
 
 ## Status
 

@@ -285,6 +285,23 @@ if [[ $DEVELOPER -eq 1 ]]; then
 
   sudo apt $APT_MODIFIERS install code
 
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "## Installing VS Code basic extesions"; fi
+
+  # https://marketplace.visualstudio.com/items?itemName=HookyQR.beautify
+  code --install-extension HookyQR.beautify
+
+  # https://marketplace.visualstudio.com/items?itemName=ysemeniuk.emmet-live
+  code --install-extension ysemeniuk.emmet-live
+
+  # https://marketplace.visualstudio.com/items?itemName=felipecaputo.git-project-manager
+  code --install-extension felipecaputo.git-project-manager
+
+  # https://marketplace.visualstudio.com/items?itemName=johnpapa.read-time
+  code --install-extension johnpapa.read-time
+
+  # https://marketplace.visualstudio.com/items?itemName=Gydunhn.vsc-essentials
+  code --install-extension Gydunhn.vsc-essentials
+
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# VS Code installed"; fi
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Installing Insomnia"; fi
@@ -387,6 +404,16 @@ if [[ $JAVASCRIPT -eq 1 ]]; then
 
   nvm install --lts
 
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+    echo "# Install VSCode extensions for Javascript development";
+  fi
+
+  # https://marketplace.visualstudio.com/items?itemName=xabikos.JavaScriptSnippets
+  code --install-extension xabikos.JavaScriptSnippets
+
+  # https://marketplace.visualstudio.com/items?itemName=Wilson-Godoi.wg-getters-and-setters
+  code --install-extension Wilson-Godoi.wg-getters-and-setters
+
 fi
 
 
@@ -410,6 +437,16 @@ if [[ $ANGULAR -eq 1 ]]; then
 
   npm install -g @angular/cli
 
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+    echo "# Install VSCode extensions for Angular development";
+  fi
+
+  # https://marketplace.visualstudio.com/items?itemName=johnpapa.angular-essentials
+  code --install-extension johnpapa.angular-essentials
+
+  # https://marketplace.visualstudio.com/items?itemName=jakethashi.vscode-angular2-emmet
+  code --install-extension jakethashi.vscode-angular2-emmet
+
 fi
 
 
@@ -424,6 +461,13 @@ if [[ $NX -eq 1 ]]; then
     echo "#                              #";
     echo "################################";
   fi
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+    echo "# Install VSCode extensions for NX development";
+  fi
+
+  # https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console
+  code --install-extension nrwl.angular-console
 
 fi
 

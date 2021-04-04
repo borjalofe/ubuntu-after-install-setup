@@ -91,7 +91,12 @@ To install a basic Angular dev env, you just need to write: `./after-install.sh 
     * Compressors -rar, p7zip-
     * Terminator
 * Prepare your newly installed Ubuntu for your daily work
-  * Install VSCode
+  * In the _developer_ mode:
+    * Install dev packages to allow dev and testing
+    * Generates a SSH key with a 1024-char passphrase
+    * Install VSCode - Code editor -
+    * Install Insomnia - API testing -
+    * Install Telegram
 
 ToDo:
 

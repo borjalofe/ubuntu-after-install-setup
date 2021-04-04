@@ -10,6 +10,8 @@ same actions everytime.
 * [How to use it](#how-to-use-it)
   * [Examples](#examples)
 * [Features](#features)
+* [Status](#status)
+* [Contact](#contact)
 
 ## Intro
 

@@ -253,21 +253,13 @@ if [[ $DEVELOPER -eq 1 ]]; then
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Installing basic tools"; fi
 
   sudo apt $APT_MODIFIERS install apt-transport-https ca-certificates curl git \
-  gnupg lsb-release software-properties-common wget
+  gnupg libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 \
+  libxss1 libasound2 libxtst6 lsb-release software-properties-common wget \
+  xauth xvfb
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Basic tools installed"; fi
 
-  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Installing Insomnia"; fi
-
-  echo "deb https://dl.bintray.com/getinsomnia/Insomnia /" \ | sudo tee -a \
-  /etc/apt/sources.list.d/insomnia.list && wget --quiet -O - \
-  https://insomnia.rest/keys/debian-public.key.asc \ | sudo apt-key add -
-
-  sudo apt $APT_MODIFIERS install insomnia
-
-  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Insomnnia installed"; fi
-
-  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Generating SSH Keyss"; fi
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Generating SSH Keys"; fi
 
   if [ ! -d ~/.ssh ]; then mkdir ~/.ssh; fi; cd ~/.ssh
 
@@ -294,6 +286,16 @@ if [[ $DEVELOPER -eq 1 ]]; then
   sudo apt $APT_MODIFIERS install code
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# VS Code installed"; fi
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Installing Insomnia"; fi
+
+  echo "deb https://dl.bintray.com/getinsomnia/Insomnia /" \ | sudo tee -a \
+  /etc/apt/sources.list.d/insomnia.list && wget --quiet -O - \
+  https://insomnia.rest/keys/debian-public.key.asc \ | sudo apt-key add -
+
+  sudo apt $APT_MODIFIERS install insomnia
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Insomnnia installed"; fi
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Installing Telegram"; fi
 

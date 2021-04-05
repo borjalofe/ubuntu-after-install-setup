@@ -12,6 +12,7 @@ same actions everytime.
   - [How to use it](#how-to-use-it)
     - [Examples](#examples)
   - [Features](#features)
+  - [Sources](#sources)
   - [Status](#status)
   - [Contact](#contact)
 
@@ -131,19 +132,19 @@ ToDo:
 - Install usual Google Chrome extensions
 - Install usual Thunderbird extensions
 - Install usual VSCode extensions for each development env
-  - Basic
-  - Javascript
-  - Angular
-  - NX
   - PHP/MySQL
   - WordPress
 - Setup Google Drive OCamLFuse
 - Setup Timeshift
 - Setup Ulauncher
 
+## Sources
+
+1. *env_setup* at [codediem-dev-env -at GitLab-](https://gitlab.com/borjalofe/codediem-dev-env)
+
 ## Status
 
-This project is being developed.
+This project is currently being developed.
 
 ## Contact
 

@@ -2,9 +2,9 @@
 
 usage=$("after-install 1.0.0
 Usage: after-install [{-h | --help}] [{-a | --angular}] [{-d | --developer}]
-                        [{-j | --javascript}] [{-m | --media}] [--nx]
-                        [{-q | --quiet}] [{-s | --sysadmin}] [{-v | --verbose}]
-                        [{-y | --yes}]
+                        [{-j | --javascript}] [{-p | --php}] [{-m | --media}]
+                        [--nx] [{-q | --quiet}] [{-s | --sysadmin}]
+                        [{-v | --verbose}] [{-w | --wordpress}] [{-y | --yes}]
 
 after-install is a script to set up a base environment after a clean Ubuntu
 installation.
@@ -14,11 +14,14 @@ where:
     -d, --developer     sets up a basic development environment
     -h, --help          show this help text
     -j, --javascript    sets up a javascript development environment
+    -l, --lemp          sets up a LEMP (Linux, Nginx, MySQL, PHP) development
+                        environment
     -m, --media         sets up a media workspace
-    --nx                sets up a nx development environment
+    --nx                sets up a NX development environment
     -q, --quiet         executes the script without any message
     -s, --sysadmin      sets up a sysadmin environment
     -v, --verbose       print all instructions and comments
+    -w, --wordpress     sets up a WordPress development environment
     -y, --yes           answer yes to all yes/no questions")
 
 if [ $# -eq 0 ] ; then
@@ -39,11 +42,13 @@ ANGULAR=0;
 DEVELOPER=0;
 HELP=0;
 JAVASCRIPT=0;
+LEMP=0;
 MEDIA=0;
 NX=0;
 QUIET=0;
 SYSADMIN=0;
 VERBOSE=0;
+WORDPRESS=0;
 YES=0;
 
 PPA_MODIFIERS=""
@@ -72,6 +77,10 @@ while [[ $# -gt 0 ]]; do
         DEVELOPER=1;
         JAVASCRIPT=1;
         shift ;;
+    -l | --lemp )
+        DEVELOPER=1;
+        LEMP=1;
+        shift ;;
     -m | --media )
         MEDIA=1;
         shift ;;
@@ -95,6 +104,11 @@ while [[ $# -gt 0 ]]; do
         shift ;;
     -v | --verbose )
         VERBOSE=1;
+        shift ;;
+    -w | --wordpress )
+        DEVELOPER=1;
+        LEMP=1;
+        WORDPRESS=1;
         shift ;;
     -y | --yes )
         YES=1;
@@ -214,6 +228,24 @@ echo 'HISTTIMEFORMAT="%F %T "' >> ~/.bashrc && source ~/.bashrc
 
 if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Basic configurations done"; fi
 
+if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Espanso install"; fi
+
+wget https://github.com/federico-terzi/modulo/releases/latest/download/modulo-x86_64.AppImage
+
+chmod u+x modulo-x86_64.AppImage
+
+sudo mv modulo-x86_64.AppImage /usr/bin/modulo
+
+wget https://github.com/federico-terzi/espanso/releases/latest/download/espanso-debian-amd64.deb
+
+sudo apt $APT_MODIFIERS install ./espanso-debian-amd64.deb
+
+espanso start
+
+rm espanso-debian-amd64.deb
+
+if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Espanso installed"; fi
+
 
 
 if [[ $MEDIA -eq 1 ]]; then
@@ -302,6 +334,9 @@ if [[ $DEVELOPER -eq 1 ]]; then
   # https://marketplace.visualstudio.com/items?itemName=Gydunhn.vsc-essentials
   code --install-extension Gydunhn.vsc-essentials
 
+  # https://marketplace.visualstudio.com/items?itemName=TabNine.tabnine-vscode
+  code --install-extension TabNine.tabnine-vscode
+
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# VS Code installed"; fi
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# Installing Insomnia"; fi
@@ -375,6 +410,216 @@ if [[ $SYSADMIN -eq 1 ]]; then
   teamviewer
 
   if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then echo "# SysAdmin's basics"; fi
+
+fi
+
+
+
+if [[ $LEMP -eq 1 ]]; then
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+    echo " ";
+    echo "################################";
+    echo "#                              #";
+    echo "#    LEMP development setup    #";
+    echo "#                              #";
+    echo "################################";
+  fi
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    echo "## Installing & settign up Nginx";
+  
+  fi
+
+  sudo apt $APT_MODIFIERS install nginx
+
+  N_CORES=$(grep processor /proc/cpuinfo | wc -l)
+  N_PROCESSES=$(ulimit -n)
+
+  sudo sed -i -e "s/www-data/${USER}/g" \
+  -e "s/worker_processes 4\;/worker_processes $N_CORES\;/g" \
+  -e "s/worker_processes auto\;/worker_processes $N_CORES\;/g" \
+  -e "s/worker_connections 768\;/worker_connections $(($N_CORES * $N_PROCESSES))\;/g" \
+  -e "s/\# multi_accept on/multi_accept on/g" \
+  -e "s/keepalive_timeout 65/keepalive_timeout 15/g" \
+  -e "s/\# server_tokens/server_tokens/g" \
+  -e "s/server_tokens on/server_tokens off/g" \
+  -e "s/server_tokens off\;/server_tokens off\;\n\tclient_max_body_size 64m\;/g" \
+  -e "s/TLSv1 TLSv1.1 //g" \
+  -e "s/# gzip_proxied/gzip_proxied/g" \
+  -e "s/# gzip_comp_level/gzip_comp_level/g" \
+  -e "s/gzip_comp_level 6/gzip_comp_level 5/g" \
+  -e "s/# gzip_types/gzip_types/g" \
+  -e "s/TLSv1 TLSv1.1 //g" \
+  -e "s/\/etc\/nginx\/sites-enabled\/\*\;/\/etc\/nginx\/sites-enabled\/\*\;\n\n\tserver \{\n\t\tlisten 80 default_server\;\n\t\tlisten \[\:\:\]\:80 default_server\;\n\t\tserver_name _\;\n\t\treturn 444\;\n\t\}/g" \
+  -e "s/Virtual Host Configs/Security Settings\n\t\#\#\n\n\tadd_header Strict-Transport-Security \"max-age=31536000\; includeSubdomains\"\;\n\tssl_session_cache shared\:SSL\:10m\;\n\tssl_session_timeout 10m\;\n\tadd_header Content-Security-Policy \"default-src 'self' https\:\/\/*.google-analytics.com https\:\/\/*.googleapis.com https\:\/\/*.gstatic.com https\:\/\/*.gravatar.com https\:\/\/*.w.org data\: 'unsafe-inline' 'unsafe-eval'\;\" always\;\n\tadd_header X-Xss-Protection \"1\; mode=block\" always\;\n\tadd_header X-Frame-Options \"SAMEORIGIN\" always\;\n\tadd_header X-Content-Type-Options \"nosniff\" always\;\n\tadd_header Referrer-Policy \"origin-when-cross-origin\" always\;\n\n\t\#\#\n\t\# Virtual Host Configs/g" \
+  /etc/nginx/nginx.conf
+
+  sudo sed -i -e "s/\$fastcgi_script_name\;/\$fastcgi_script_name\;\nfastcgi_param  SCRIPT_FILENAME  \$document_root\$fastcgi_script_name;/g" \
+  /etc/nginx/fastcgi_params
+
+  sudo rm /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+  sudo service nginx restart
+
+
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    echo "## Installing & settign up PHP";
+  
+  fi
+
+  sudo add-apt-repository $PPA_MODIFIERS ppa:ondrej/php
+  sudo apt $APT_MODIFIERS update
+  sudo apt $APT_MODIFIERS install php7.4-fpm php7.4-common php7.4-mysql \
+  php7.4-xml php7.4-xmlrpc php7.4-curl php7.4-gd \
+  php7.4-imagick php7.4-cli php7.4-dev php7.4-imap \
+  php7.4-mbstring php7.4-opcache php7.4-redis \
+  php7.4-soap php7.4-zip
+
+  sudo sed -i -e "s/\= www-data/\= ${USER}/g" \
+  /etc/php/7.4/fpm/pool.d/www.conf
+
+  sudo sed -i -e "s/upload_max_filesize \= 2M/upload_max_filesize \= 64M/g" \
+  -e "s/post_max_size \= 8M/post_max_size \= 64M/g" \
+  /etc/php/7.4/fpm/php.ini
+
+  sudo service php7.4-fpm restart
+
+
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    echo "## Installing & settign up Redis Cache";
+  
+  fi
+
+  sudo apt $APT_MODIFIERS install redis-server
+
+  sudo service php7.4-fpm restart
+
+
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    echo "## Installing & settign up MariaDB";
+  
+  fi
+
+  sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
+
+  sudo add-apt-repository $PPA_MODIFIERS 'deb [arch=amd64,arm64,ppc64el] http://mirrors.up.pt/pub/mariadb/repo/10.4/ubuntu focal main'
+
+  sudo apt $APT_MODIFIERS install mariadb-server
+
+  sudo mysql_secure_installation
+
+
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    # echo "## Installing & settign up Let's Encrypt";
+  
+  fi
+
+  # sudo add-apt-repository $PPA_MODIFIERS universe
+
+  # sudo apt $APT_MODIFIERS update
+
+  # sudo apt $APT_MODIFIERS install certbot python3-certbot-nginx
+
+  # sudo certbot --nginx certonly -d ashleyrich.com -d www.ashleyrich.com # @TODO
+
+
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    echo "## Installing VS Code extesions for PHP development";
+  
+  fi
+
+  # https://marketplace.visualstudio.com/items?itemName=dudemelo.php-essentials
+  code --install-extension dudemelo.php-essentials
+
+  # https://marketplace.visualstudio.com/items?itemName=phproberto.vscode-php-getters-setters
+  code --install-extension phproberto.vscode-php-getters-setters
+
+fi
+
+
+
+if [[ $WORDPRESS -eq 1 ]]; then
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+    echo " ";
+    echo "################################";
+    echo "#                              #";
+    echo "# WordPress development setup  #";
+    echo "#                              #";
+    echo "################################";
+  fi
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    echo "## Installing & settign up WP-CLI";
+  
+  fi
+
+  curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+  chmod +x wp-cli.phar
+
+  sudo mv wp-cli.phar /usr/local/bin/wp
+
+  # wp package install git@github.com:wp-cli/checksum-command.git # https://github.com/wp-cli/checksum-command <- Problemas!!!!
+  # wp package install git@github.com:wp-cli/doctor-command.git # https://github.com/wp-cli/doctor-command
+  # wp package install git@github.com:wp-cli/i18n-command.git # https://github.com/wp-cli/i18n-command
+  # wp package install git@github.com:wp-cli/profile-command.git # https://github.com/wp-cli/profile-command
+  # wp package install binarygary/db-checkpoint # https://github.com/binarygary/db-checkpoint <- Problemas!!!!
+
+
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    echo "## Settign up Nginx for WordPress development";
+  
+  fi
+
+  sudo sed -i -e "s/Security Settings/Cache Settings\n\t\#\#\n\n\tfastcgi_cache_key \"\$scheme\$request_method\$host\$request_uri\"\;\n\tadd_header Fastcgi-Cache \$upstream_cache_status\;\n\n\t\#\#\n\t\# Security Settings/g" \
+  /etc/nginx/nginx.conf
+
+  sudo service nginx restart
+
+
+
+  if [[ $VERBOSE -eq 1 && $QUIET -eq 0 ]]; then
+
+    echo "## Installing VS Code extesions for WordPress development";
+  
+  fi
+
+  # https://marketplace.visualstudio.com/items?itemName=ashiqkiron.gutensnip
+  code --install-extension ashiqkiron.gutensnip
+
+  # https://marketplace.visualstudio.com/items?itemName=hridoy.wordpress
+  code --install-extension hridoy.wordpress
+
+  # https://marketplace.visualstudio.com/items?itemName=wordpresstoolbox.wordpress-toolbox
+  code --install-extension wordpresstoolbox.wordpress-toolbox
+
+  # https://marketplace.visualstudio.com/items?itemName=tungvn.wordpress-snippet
+  code --install-extension tungvn.wordpress-snippet
+
+  # https://marketplace.visualstudio.com/items?itemName=anthonydiametrix.ACF-Snippet
+  code --install-extension anthonydiametrix.ACF-Snippet
+
+  # https://marketplace.visualstudio.com/items?itemName=claudiosanches.woocommerce
+  code --install-extension claudiosanches.woocommerce
+
+  # https://marketplace.visualstudio.com/items?itemName=claudiosanches.wpcs-whitelist-flags
+  code --install-extension claudiosanches.wpcs-whitelist-flags
 
 fi
 

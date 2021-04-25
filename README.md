@@ -44,9 +44,9 @@ chmod +x after-install.sh
 ```bash
 after-install 1.0.0
 Usage: after-install [{-h | --help}] [{-a | --angular}] [{-d | --developer}]
-                        [{-j | --javascript}] [{-m | --media}] [--nx]
-                        [{-q | --quiet}] [{-s | --sysadmin}] [{-v | --verbose}]
-                        [{-y | --yes}]
+                        [{-j | --javascript}] [{-p | --php}] [{-m | --media}]
+                        [--nx] [{-q | --quiet}] [{-s | --sysadmin}]
+                        [{-v | --verbose}] [{-w | --wordpress}] [{-y | --yes}]
 
 after-install is a script to set up a base environment after a clean Ubuntu
 installation.
@@ -56,11 +56,14 @@ where:
     -d, --developer     sets up a basic development environment
     -h, --help          show this help text
     -j, --javascript    sets up a javascript development environment
+    -l, --lemp          sets up a LEMP (Linux, Nginx, MySQL, PHP) development
+                        environment
     -m, --media         sets up a media workspace
-    --nx                sets up a nx development environment
+    --nx                sets up a NX development environment
     -q, --quiet         executes the script without any message
     -s, --sysadmin      sets up a sysadmin environment
     -v, --verbose       print all instructions and comments
+    -w, --wordpress     sets up a WordPress development environment
     -y, --yes           answer yes to all yes/no questions
 ```
 

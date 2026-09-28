@@ -1,154 +1,68 @@
 # Ubuntu After-Install Setup Script
 
-This script aims at easing the after-install process in which we usually do the
-same actions everytime.
+> **Este repositorio está descontinuado.** No lo uses para instalaciones nuevas.  
+> El trabajo continúa en **[ventoy-unattended-install](https://github.com/borjalofe/ventoy-unattended-install)** (instalación desatendida con Ventoy y perfiles por rol).
 
-## Table of Contents
+## Problema (histórico)
 
-- [Ubuntu After-Install Setup Script](#ubuntu-after-install-setup-script)
-  - [Table of Contents](#table-of-contents)
-  - [Intro](#intro)
-  - [Technologies](#technologies)
-  - [How to use it](#how-to-use-it)
-    - [Examples](#examples)
-  - [Features](#features)
-  - [Sources](#sources)
-  - [Status](#status)
-  - [Contact](#contact)
+Cada portátil Ubuntu nuevo significaba las mismas búsquedas: Chrome, VS Code, NVM, flatpaks, flags de developer vs sysadmin. Un script bash monolítico (`after-install.sh`) intentaba cerrar ese ciclo en un solo sitio.
 
-## Intro
+## Quién lo usaba
 
-Everytime I install Ubuntu in a new laptop, I google _Ubuntu {version} after
-install_ and I get lots of posts that -essentially- have the same info. Moreover, this info don't usually change from version to version.
+Yo (desktop personal). Amigos / lectores podían copiarlo; nunca fue un producto de sysadmin de flota.
 
-Thus, I've created this project to automate all the actions for each of the jobs I usually do.
+## Alcance
 
-Over time, I've tried to expand this script's features to cover other jobs.
+**Entonces:** post-install de Ubuntu Desktop con flags (`developer`, `javascript`, stacks web, LEMP/WordPress, media, sysadmin, etc.).
 
-## Technologies
+**Ahora:** solo archivo. El diseño se replantea en Ventoy (perfiles `front` / `back` / `infra` / …, varias familias de SO). **No se copian archivos** de aquí al sucesor.
 
-After-Install is created with:
+## Sucesor
 
-- Shellscript
+| | |
+|---|---|
+| **Proyecto actual** | [borjalofe/ventoy-unattended-install](https://github.com/borjalofe/ventoy-unattended-install) |
+| **Enfoque** | Artefactos de instalación desatendida en USB Ventoy; perfiles por rol; varias familias de SO |
+| **Relación** | Referencia histórica únicamente |
 
-## How to use it
+## Cómo se ejecutaba (no recomendado)
+
+Entrada: `after-install.sh`. Cualquier one-liner con URL `/blob/` de GitHub era incorrecto (sirve HTML, no el script). El camino sano hubiera sido:
 
 ```bash
-wget https://github.com/borjalofe/ubuntu-after-install-setup/blob/main/after-install.sh
-chmod +x after-install.sh
-./after-install.sh
+git clone https://github.com/borjalofe/ubuntu-after-install-setup.git
+cd ubuntu-after-install-setup
+./after-install.sh --help
 ```
 
-`./after-install.sh` displays the following usage message:
+No lo uses en máquinas nuevas: flags y paquetes están desalineados con Ubuntu actual.
 
-```bash
-after-install 1.0.0
-Usage: after-install [{-h | --help}] [{-a | --angular}] [{-d | --developer}]
-                        [{-j | --javascript}] [{-p | --php}] [{-m | --media}]
-                        [--nx] [{-q | --quiet}] [{-s | --sysadmin}]
-                        [{-v | --verbose}] [{-w | --wordpress}] [{-y | --yes}]
+## Decisiones técnicas
 
-after-install is a script to set up a base environment after a clean Ubuntu
-installation.
+**¿Por qué bash monolítico y no Ansible / Nix?**
 
-where:
-    -a, --angular       sets up an angular development environment
-    -d, --developer     sets up a basic development environment
-    -h, --help          show this help text
-    -j, --javascript    sets up a javascript development environment
-    -l, --lemp          sets up a LEMP (Linux, Nginx, MySQL, PHP) development
-                        environment
-    -m, --media         sets up a media workspace
-    --nx                sets up a NX development environment
-    -q, --quiet         executes the script without any message
-    -s, --sysadmin      sets up a sysadmin environment
-    -v, --verbose       print all instructions and comments
-    -w, --wordpress     sets up a WordPress development environment
-    -y, --yes           answer yes to all yes/no questions
-```
+Velocidad personal en un solo desktop: un fichero, SSH, listo. Ansible hubiera sido correcto para flota; para un portátil era overhead. Nix no estaba en el radar cuando nació el script.
 
-### Examples
+## Trade-offs y limitaciones
 
-To install a basic Angular dev env, you just need to write: `./after-install.sh -a` or `./after-install.sh --angular`
+- `--yes` / quiet vs prompts: cómodo en máquina limpia, peligroso en una ya usada.
+- TODO eterno (Docker, Slack, Drive…) y software que ya no uso (Skype, Steam) hinchaban el script.
+- Help vs `case` del script divergían: el README no puede mentir sobre flags que el código no cumple.
 
-## Features
+## Evidencia de calidad
 
-- Do all basic after-install actions you usually read in a "X things to do after install Ubuntu yy.mm" automatically
-  - First upgrade
-  - Enable Ubuntu's partners repos
-  - Install Gnome Shell extensions
-  - Install Gnome Tweak Tool
-  - Install Laptop Mode Tools
-  - Install third-party codecs -Ubuntu restricted extras and libdvd-
-  - Install Microsoft fonts
-  - Install software:
-    - Flatpak and Synaptic
-    - Google Chrome -and Gnome Shell extension for Chrome-
-    - Skype
-    - Steam
-    - Thunderbird
-    - Timeshift
-    - Transmission
-    - Ulauncher
-    - VLC
-  - Install tools:
-    - Compressors -rar, p7zip-
-    - Terminator
-- Prepare your newly installed Ubuntu for your daily work
-  - In the _developer_ mode:
-    - Install dev packages to allow dev and testing
-    - Generates a SSH key with a 1024-char passphrase
-    - Install VSCode - Code editor -
-      - Install Beautify
-      - Install Emmet -HTML/CSS expander-
-      - Install git project manager
-      - Install Read Time -for MarkDown files-
-      - Install VSC Essentials
-    - Install Insomnia - API testing -
-    - Install Telegram
-  - In the _Javascript developer_ mode:
-    - Install NVM
-    - Install Node&NPM LTS
-    - Install VSCode Javascript extensions
-      - Install Javascript ES6 Code Snippets
-      - Install Typescript's Getters and Setters
-  - In the _Angular developer_ mode:
-    - Install Angular CLI
-    - Install VSCode Angular extensions
-      - Install Angular Essentials
-      - Install Angular Emmet -Angular expander-
-  - In the _NX developer_ mode:
-    - Install VSCode Angular extensions
-      - Install NX Angular Console
+No hay CI ni dry-run fiable. El "check" honesto es: **no ejecutarlo** y mirar el sucesor Ventoy.
 
-ToDo:
+## Lecciones aprendidas
 
-- Add an easy way to extend after-install actions with an updated usage message
-- Get git user info to setup local git
-- Install and setup Docker and add usual .dockerfile
-  - Javascript
-  - Angular
-  - NX
-  - PHP/MySQL
-  - WordPress
-- Install and setup Slack
-- Install usual Google Chrome extensions
-- Install usual Thunderbird extensions
-- Install usual VSCode extensions for each development env
-  - PHP/MySQL
-  - WordPress
-- Setup Google Drive OCamLFuse
-- Setup Timeshift
-- Setup Ulauncher
+Un after-install que crece a golpe de flag acaba siendo un museo de decisiones de 2019–2023. Mejor artefactos de instalación desatendida versionados por perfil (Ventoy) que un bash que intenta ser distro-agnostic a mano.
 
-## Sources
+## Próximos pasos
 
-1. *env_setup* at [codediem-dev-env -at GitLab-](https://gitlab.com/borjalofe/codediem-dev-env)
+1. Archivar el repo en GitHub (Settings → Archive) si aún no lo está.
+2. Descripción del repo: `Deprecated — use ventoy-unattended-install`.
+3. Toda la planificación nueva vive en el sucesor; `docs/ventoy-relaunch-plan.md` aquí es borrador obsoleto.
 
-## Status
+## Contacto
 
-This project is currently being developed.
-
-## Contact
-
-Created by [@borjalofe](https://github.com/borjalofe) - feel free to contact me!
+[@borjalofe](https://github.com/borjalofe)
